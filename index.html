@@ -3,106 +3,86 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>LET ME GO — LIORA | AI Music Video</title>
+<title>AI Music Video Generator</title>
 
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;
-  background:#070812;
-  color:#fff;
-  font-family:Arial,sans-serif
+ margin:0;background:#080912;color:#fff;
+ font-family:Arial,sans-serif
 }
 main{
-  max-width:760px;
-  margin:auto;
-  padding:18px 15px 50px
+ max-width:760px;margin:auto;padding:18px 15px 50px
 }
-h1{
-  font-size:26px;
-  margin:5px 0
-}
-.muted{
-  opacity:.65;
-  margin:0 0 18px
-}
+h1{font-size:25px;margin:5px 0}
+.muted{opacity:.65;margin:5px 0 18px}
 .card{
-  background:#11121c;
-  border:1px solid #292b3a;
-  border-radius:18px;
-  padding:16px;
-  margin:12px 0
+ background:#11131d;border:1px solid #292d3a;
+ border-radius:18px;padding:16px;margin:12px 0
 }
 label{
-  display:block;
-  font-size:13px;
-  opacity:.8;
-  margin:10px 0 6px
+ display:block;font-size:13px;opacity:.8;
+ margin:10px 0 6px
 }
-input,button,select{
-  width:100%;
-  border-radius:12px;
-  border:1px solid #303348;
-  background:#171927;
-  color:#fff;
-  padding:12px;
-  font-size:15px
+input,textarea,select,button{
+ width:100%;border-radius:12px;
+ border:1px solid #303448;
+ background:#171927;color:#fff;
+ padding:12px;font-size:15px
+}
+textarea{min-height:150px;resize:vertical}
+.grid{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:10px
 }
 button{
-  background:#fff;
-  color:#111;
-  border:0;
-  font-weight:800;
-  margin-top:12px
+ background:#fff;color:#111;
+ font-weight:800;border:0;
+ margin-top:12px
 }
 button.secondary{
-  background:#292b3a;
-  color:#fff
+ background:#292d3a;color:#fff
 }
-button:disabled{
-  opacity:.45
-}
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px
+button:disabled{opacity:.4}
+#status{
+ font-size:13px;opacity:.7;
+ margin-top:10px;min-height:20px
 }
 .scene{
-  background:#0d0e17;
-  border:1px solid #292b3a;
-  border-radius:12px;
-  padding:10px
+ background:#0d0f18;
+ border:1px solid #292d3a;
+ border-radius:14px;
+ padding:13px;
+ margin:10px 0
 }
-.scene strong{
-  display:block;
-  margin-bottom:7px
+.scene h3{margin:0 0 7px}
+.badge{
+ display:inline-block;
+ background:#292d3a;
+ padding:5px 8px;
+ border-radius:8px;
+ font-size:11px;
+ opacity:.8
+}
+.prompt{
+ margin-top:10px;
+ padding:10px;
+ background:#080912;
+ border-radius:10px;
+ font-size:13px;
+ line-height:1.5
 }
 canvas{
-  width:100%;
-  display:block;
-  background:#000;
-  border-radius:14px
+ width:100%;
+ display:block;
+ background:#020205;
+ border-radius:15px;
+ margin-top:10px
 }
-.status{
-  margin-top:10px;
-  padding:10px;
-  background:#0d0e17;
-  border-radius:10px;
-  font-size:13px
-}
-a.download{
-  display:block;
-  text-align:center;
-  background:#fff;
-  color:#111;
-  padding:13px;
-  border-radius:12px;
-  text-decoration:none;
-  font-weight:bold;
-  margin-top:12px
-}
-@media(max-width:600px){
-  .grid{grid-template-columns:1fr}
+.small{
+ font-size:12px;
+ opacity:.55;
+ line-height:1.5
 }
 </style>
 </head>
@@ -110,567 +90,507 @@ a.download{
 <body>
 <main>
 
-<h1>🎬 LET ME GO — LIORA</h1>
-<p class="muted">
-AI Music Video • Cinematic • 9:16
-</p>
+<h1>🎬 Song → AI Music Video</h1>
+<div class="muted">
+Universal version • semua artis • semua lagu • storyboard otomatis
+</div>
 
 <div class="card">
 
 <label>🎵 Lagu</label>
-<input id="audioFile" type="file" accept="audio/*">
+<input id="audio" type="file" accept="audio/*">
 
 <div class="grid">
-  <div>
-    <label>Judul</label>
-    <input id="title" value="LET ME GO">
-  </div>
-
-  <div>
-    <label>Artis</label>
-    <input id="artist" value="LIORA">
-  </div>
+<div>
+<label>Judul Lagu</label>
+<input id="title" value="">
 </div>
 
-<label>⏱️ Durasi setiap scene</label>
-<select id="sceneDuration">
-  <option value="15">15 detik</option>
-  <option value="20" selected>20 detik</option>
-  <option value="25">25 detik</option>
-  <option value="30">30 detik</option>
+<div>
+<label>Artis</label>
+<input id="artist" value="">
+</div>
+</div>
+
+<label>📝 Lirik / Cerita Lagu</label>
+<textarea id="lyrics"
+placeholder="Tempel lirik lengkap atau tulis cerita lagu di sini..."></textarea>
+
+<div class="grid">
+
+<div>
+<label>🎨 Tema</label>
+<select id="theme">
+<option>Dark Cinematic</option>
+<option>Romantic</option>
+<option>Gothic Metal</option>
+<option>EDM / Bass</option>
+<option>Horeg / Festival</option>
+<option>Pop Emotional</option>
+<option>R&B</option>
+<option>Rock</option>
+<option>Fantasy</option>
+<option>Sad Cinematic</option>
 </select>
+</div>
+
+<div>
+<label>📱 Rasio</label>
+<select id="ratio">
+<option value="9:16">9:16</option>
+<option value="16:9">16:9</option>
+<option value="1:1">1:1</option>
+</select>
+</div>
 
 </div>
+
+<button id="story">✨ Buat Storyboard Otomatis</button>
+
+<div id="status"></div>
+
+</div>
+
+<div id="scenes"></div>
 
 <div class="card">
+<h3>🎧 Audio Reactive Preview</h3>
+<canvas id="cv" width="720" height="1280"></canvas>
 
-<h3>🖼️ Upload 10 Scene AI</h3>
-
-<div class="scene">
-<strong>Scene 1 — Intro</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 2 — Verse 1</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 3 — Love</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 4 — Betrayal</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 5 — Crying</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 6 — Walking Away</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 7 — Alone</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 8 — Leaving</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 9 — Sunrise</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<div class="scene">
-<strong>Scene 10 — New Beginning</strong>
-<input type="file" class="sceneFile" accept="image/*">
-</div>
-
-<button id="loadBtn">📷 Muat Semua Scene</button>
-
-</div>
-
-<div class="card">
-
-<h3>🎞️ Preview</h3>
-
-<canvas id="canvas" width="720" height="1280"></canvas>
-
-<button id="previewBtn" class="secondary" disabled>
+<button id="preview" class="secondary" disabled>
 ▶ Preview Video
 </button>
 
-<button id="recordBtn" disabled>
-🔴 Rekam Video
+<button id="record" disabled>
+🎥 Rekam Video
 </button>
 
-<div id="status" class="status">
-Silakan pilih lagu dan gambar scene.
+<div class="small">
+Preview menggunakan audio asli dan visual audio-reactive.
+Storyboard serta prompt scene dibuat otomatis dari lagu.
 </div>
-
-<div id="download"></div>
-
 </div>
 
 </main>
 
 <script>
 
-const audioFile =
-document.getElementById("audioFile");
+const $=id=>document.getElementById(id);
 
-const sceneFiles =
-document.querySelectorAll(".sceneFile");
+let audio=null;
+let ctx=null;
+let analyser=null;
+let source=null;
+let animation=null;
+let recorder=null;
+let chunks=[];
+let scenes=[];
 
-const loadBtn =
-document.getElementById("loadBtn");
+const cv=$("cv");
+const c=cv.getContext("2d");
 
-const previewBtn =
-document.getElementById("previewBtn");
+const themes={
+"Dark Cinematic":
+"dark cinematic atmosphere, dramatic lighting, deep shadows, emotional realistic film look",
 
-const recordBtn =
-document.getElementById("recordBtn");
+"Romantic":
+"romantic cinematic atmosphere, beautiful soft lighting, emotional couple, realistic film look",
 
-const canvas =
-document.getElementById("canvas");
+"Gothic Metal":
+"gothic cinematic atmosphere, dark architecture, dramatic moonlight, mysterious realistic film",
 
-const ctx =
-canvas.getContext("2d");
+"EDM / Bass":
+"futuristic EDM atmosphere, neon lights, powerful stage, cinematic realistic visuals",
 
-const statusBox =
-document.getElementById("status");
+"Horeg / Festival":
+"massive Indonesian music festival, powerful sound system, energetic crowd, cinematic realism",
 
-const downloadBox =
-document.getElementById("download");
+"Pop Emotional":
+"emotional modern music video, beautiful cinematic lighting, realistic human emotion",
 
-let audio = new Audio();
-let audioURL = null;
+"R&B":
+"modern R&B music video, elegant night city, cinematic lighting, realistic photography",
 
-let images = [];
-let running = false;
-let recording = false;
+"Rock":
+"powerful rock music video, dramatic stage lighting, realistic cinematic photography",
 
-let audioCtx = null;
-let sourceNode = null;
-let analyser = null;
-let destination = null;
+"Fantasy":
+"epic fantasy world, cinematic atmosphere, dramatic light, highly realistic film",
 
-function status(text){
-  statusBox.textContent = text;
+"Sad Cinematic":
+"sad emotional cinematic scene, lonely atmosphere, dramatic natural lighting, realistic film"
+};
+
+function resize(){
+
+ let r=$("ratio").value;
+
+ if(r==="16:9"){
+   cv.width=1280;
+   cv.height=720;
+ }else if(r==="1:1"){
+   cv.width=900;
+   cv.height=900;
+ }else{
+   cv.width=720;
+   cv.height=1280;
+ }
+
+ draw();
+
 }
 
-function loadImage(file){
+$("ratio").onchange=resize;
 
-  return new Promise((resolve,reject)=>{
+function splitText(text){
 
-    const img = new Image();
-
-    img.onload = ()=>resolve(img);
-
-    img.onerror = reject;
-
-    img.src = URL.createObjectURL(file);
-
-  });
+ return text
+ .split(/\n+/)
+ .map(x=>x.trim())
+ .filter(Boolean);
 
 }
 
-loadBtn.onclick = async ()=>{
+function makeScenes(){
 
-  if(!audioFile.files[0]){
-    alert("Pilih file lagu terlebih dahulu.");
-    return;
-  }
+ let title=$("title").value.trim() || "Untitled Song";
+ let artist=$("artist").value.trim() || "Unknown Artist";
+ let lyrics=$("lyrics").value.trim();
 
-  const selected =
-  [...sceneFiles].filter(x=>x.files[0]);
+ if(!lyrics){
+   alert("Masukkan lirik atau cerita lagu terlebih dahulu.");
+   return;
+ }
 
-  if(selected.length === 0){
-    alert("Masukkan minimal 1 gambar scene.");
-    return;
-  }
+ let lines=splitText(lyrics);
 
-  status("Memuat gambar scene...");
+ let sections=[
+  "INTRO",
+  "VERSE 1",
+  "PRE-CHORUS",
+  "CHORUS",
+  "VERSE 2",
+  "BRIDGE",
+  "FINAL CHORUS",
+  "OUTRO"
+ ];
 
-  images = [];
+ while(lines.length<8){
+   lines.push(lines[lines.length-1] || "Emotional cinematic moment");
+ }
 
-  for(const input of sceneFiles){
+ let theme=$("theme").value;
+ let base=themes[theme];
 
-    if(input.files[0]){
+ scenes=[];
 
-      const img =
-      await loadImage(input.files[0]);
+ for(let i=0;i<8;i++){
 
-      images.push(img);
+   let text=lines[i];
 
-    }
+   scenes.push({
+     name:sections[i],
+     text:text,
+     prompt:
+     `Photorealistic cinematic music video scene for "${title}" by ${artist}. `+
+     `${base}. `+
+     `Visual story inspired by: ${text}. `+
+     `Natural human appearance, realistic skin texture, realistic clothing, `+
+     `cinematic composition, volumetric lighting, shallow depth of field, `+
+     `high detail, professional music video cinematography, 4K, no text, no watermark.`
+   });
 
-  }
+ }
 
-  audioURL =
-  URL.createObjectURL(audioFile.files[0]);
+ renderScenes();
 
-  audio.src = audioURL;
+ $("preview").disabled=false;
+ $("record").disabled=false;
 
-  audio.preload = "auto";
+ $("status").textContent=
+ "Storyboard selesai. "+scenes.length+" scene dibuat otomatis.";
 
-  previewBtn.disabled = false;
-  recordBtn.disabled = false;
+}
 
-  status(
-    images.length +
-    " scene berhasil dimuat. Siap preview."
-  );
+function renderScenes(){
+
+ let html="";
+
+ scenes.forEach((s,i)=>{
+
+   html+=`
+   <div class="card scene">
+   <h3>${i+1}. ${s.name}</h3>
+   <span class="badge">${s.text}</span>
+
+   <div class="prompt">
+   <b>🎬 AI SCENE PROMPT</b><br><br>
+   ${s.prompt}
+   </div>
+
+   <button class="secondary"
+   onclick="copyPrompt(${i})">
+   📋 Copy Prompt
+   </button>
+
+   </div>
+   `;
+
+ });
+
+ $("scenes").innerHTML=html;
+
+}
+
+window.copyPrompt=function(i){
+
+ navigator.clipboard.writeText(scenes[i].prompt);
+
+ $("status").textContent=
+ "Prompt scene "+(i+1)+" berhasil disalin.";
+
+}
+
+$("story").onclick=makeScenes;
+
+$("audio").onchange=function(){
+
+ let file=this.files[0];
+
+ if(!file)return;
+
+ audio=new Audio();
+ audio.src=URL.createObjectURL(file);
+ audio.crossOrigin="anonymous";
+
+ audio.onloadedmetadata=()=>{
+   $("status").textContent=
+   "Lagu siap. Durasi: "+
+   Math.floor(audio.duration/60)+":"+
+   String(Math.floor(audio.duration%60)).padStart(2,"0");
+ };
 
 };
 
-function drawCover(img,zoom=1){
+function startAudio(){
 
-  const cw = canvas.width;
-  const ch = canvas.height;
+ if(!audio){
+   alert("Pilih file lagu terlebih dahulu.");
+   return false;
+ }
 
-  const iw = img.width;
-  const ih = img.height;
+ if(!ctx){
 
-  const scale =
-    Math.max(cw/iw,ch/ih)*zoom;
+   ctx=new(window.AudioContext||
+   window.webkitAudioContext)();
 
-  const w = iw*scale;
-  const h = ih*scale;
+   analyser=ctx.createAnalyser();
+   analyser.fftSize=256;
 
-  const x = (cw-w)/2;
-  const y = (ch-h)/2;
+   source=ctx.createMediaElementSource(audio);
+   source.connect(analyser);
+   analyser.connect(ctx.destination);
 
-  ctx.drawImage(img,x,y,w,h);
+ }
 
-}
+ ctx.resume();
 
-function drawFrame(img,progress){
+ audio.play();
 
-  ctx.fillStyle="#000";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
+ draw();
 
-  const zoom =
-    1.00 + progress*0.08;
-
-  drawCover(img,zoom);
-
-  // dark cinematic overlay
-  const gradient =
-  ctx.createLinearGradient(
-    0,0,0,canvas.height
-  );
-
-  gradient.addColorStop(0,
-    "rgba(0,0,0,.18)");
-
-  gradient.addColorStop(.55,
-    "rgba(0,0,0,.05)");
-
-  gradient.addColorStop(1,
-    "rgba(0,0,0,.65)");
-
-  ctx.fillStyle=gradient;
-  ctx.fillRect(
-    0,0,canvas.width,canvas.height
-  );
-
-  // title
-  ctx.textAlign="center";
-
-  ctx.fillStyle="white";
-
-  ctx.font="bold 42px Arial";
-
-  ctx.fillText(
-    document.getElementById("title").value,
-    canvas.width/2,
-    80
-  );
-
-  ctx.font="22px Arial";
-
-  ctx.globalAlpha=.8;
-
-  ctx.fillText(
-    document.getElementById("artist").value,
-    canvas.width/2,
-    115
-  );
-
-  ctx.globalAlpha=1;
-
-  // audio-reactive line
-  if(analyser){
-
-    const data =
-    new Uint8Array(
-      analyser.frequencyBinCount
-    );
-
-    analyser.getByteFrequencyData(data);
-
-    ctx.beginPath();
-
-    const step =
-    canvas.width/data.length;
-
-    for(let i=0;i<data.length;i++){
-
-      const v =
-      data[i]/255;
-
-      const y =
-      canvas.height-170-v*120;
-
-      const x=i*step;
-
-      if(i===0)
-        ctx.moveTo(x,y);
-      else
-        ctx.lineTo(x,y);
-
-    }
-
-    ctx.strokeStyle =
-    "rgba(180,150,255,.75)";
-
-    ctx.lineWidth=3;
-
-    ctx.stroke();
-
-  }
+ return true;
 
 }
 
-async function setupAudio(){
+$("preview").onclick=function(){
 
-  if(audioCtx)
-    return;
-
-  audioCtx =
-  new AudioContext();
-
-  sourceNode =
-  audioCtx.createMediaElementSource(audio);
-
-  analyser =
-  audioCtx.createAnalyser();
-
-  analyser.fftSize=256;
-
-  destination =
-  audioCtx.createMediaStreamDestination();
-
-  sourceNode.connect(analyser);
-
-  analyser.connect(audioCtx.destination);
-
-  analyser.connect(destination);
-
-}
-
-async function playVideo(record=false){
-
-  if(images.length===0)
-    return;
-
-  await setupAudio();
-
-  if(audioCtx.state==="suspended")
-    await audioCtx.resume();
-
-  running=true;
-
-  recording=record;
-
-  downloadBox.innerHTML="";
-
-  audio.currentTime=0;
-
-  const duration =
-  parseInt(
-    document.getElementById(
-      "sceneDuration"
-    ).value
-  );
-
-  await audio.play();
-
-  let recorder=null;
-  let chunks=[];
-
-  if(record){
-
-    const canvasStream =
-    canvas.captureStream(30);
-
-    const combined =
-    new MediaStream();
-
-    canvasStream
-    .getVideoTracks()
-    .forEach(track=>{
-      combined.addTrack(track);
-    });
-
-    destination
-    .stream
-    .getAudioTracks()
-    .forEach(track=>{
-      combined.addTrack(track);
-    });
-
-    const mime =
-    MediaRecorder.isTypeSupported(
-      "video/webm;codecs=vp9,opus"
-    )
-    ? "video/webm;codecs=vp9,opus"
-    : "video/webm";
-
-    recorder =
-    new MediaRecorder(
-      combined,
-      {mimeType:mime}
-    );
-
-    recorder.ondataavailable=e=>{
-      if(e.data.size>0)
-        chunks.push(e.data);
-    };
-
-    recorder.onstop=()=>{
-
-      const blob =
-      new Blob(
-        chunks,
-        {type:"video/webm"}
-      );
-
-      const url =
-      URL.createObjectURL(blob);
-
-      const a =
-      document.createElement("a");
-
-      a.href=url;
-
-      a.download=
-      "LET_ME_GO_LIORA.webm";
-
-      a.textContent=
-      "⬇️ Download Video LET ME GO";
-
-      a.className="download";
-
-      downloadBox.appendChild(a);
-
-      status(
-        "Video selesai dibuat."
-      );
-
-    };
-
-    recorder.start();
-
-  }
-
-  function frame(){
-
-    if(!running)
-      return;
-
-    const current =
-    audio.currentTime;
-
-    const index =
-    Math.min(
-      images.length-1,
-      Math.floor(current/duration)
-    );
-
-    const sceneStart =
-    index*duration;
-
-    const progress =
-    Math.min(
-      1,
-      Math.max(
-        0,
-        (current-sceneStart)/duration
-      )
-    );
-
-    drawFrame(
-      images[index],
-      progress
-    );
-
-    status(
-      "Scene "+
-      (index+1)+
-      " / "+
-      images.length+
-      " • "+
-      Math.floor(current)+
-      " detik"
-    );
-
-    if(!audio.ended){
-
-      requestAnimationFrame(frame);
-
-    }else{
-
-      running=false;
-
-      if(recorder &&
-         recorder.state!=="inactive"){
-        recorder.stop();
-      }
-
-      audio.pause();
-
-    }
-
-  }
-
-  requestAnimationFrame(frame);
-
-}
-
-previewBtn.onclick=()=>{
-
-  if(running)
-    return;
-
-  playVideo(false);
+ if(!startAudio())return;
 
 };
 
-recordBtn.onclick=()=>{
+function draw(){
 
-  if(running)
-    return;
+ if(!analyser){
 
-  if(!confirm(
-    "Rekam video LET ME GO sekarang?"
-  ))
-    return;
+   drawIdle();
+   return;
 
-  playVideo(true);
+ }
+
+ let data=new Uint8Array(analyser.frequencyBinCount);
+
+ function frame(){
+
+   animation=requestAnimationFrame(frame);
+
+   analyser.getByteFrequencyData(data);
+
+   let avg=0;
+
+   for(let i=0;i<data.length;i++)
+   avg+=data[i];
+
+   avg/=data.length;
+
+   drawVisual(avg,data);
+
+ }
+
+ frame();
+
+}
+
+function drawIdle(){
+
+ let w=cv.width;
+ let h=cv.height;
+
+ let g=c.createRadialGradient(
+   w/2,h*.35,10,
+   w/2,h*.35,h*.7
+ );
+
+ g.addColorStop(0,"#6655ff");
+ g.addColorStop(1,"#03040a");
+
+ c.fillStyle=g;
+ c.fillRect(0,0,w,h);
+
+}
+
+function drawVisual(level,data){
+
+ let w=cv.width;
+ let h=cv.height;
+
+ let g=c.createRadialGradient(
+   w/2,h*.35,10,
+   w/2,h*.35,h*.8
+ );
+
+ let power=Math.min(level/180,1);
+
+ g.addColorStop(0,
+ "#"+Math.floor(80+power*100)
+ .toString(16).padStart(2,"0")+"55ff");
+
+ g.addColorStop(1,"#020205");
+
+ c.fillStyle=g;
+ c.fillRect(0,0,w,h);
+
+ c.save();
+
+ c.translate(w/2,h*.35);
+
+ let radius=
+ Math.min(w,h)*.12+
+ power*Math.min(w,h)*.18;
+
+ c.beginPath();
+ c.arc(0,0,radius,0,Math.PI*2);
+
+ c.fillStyle=
+ "rgba(120,90,255,"+
+ (.15+power*.45)+")";
+
+ c.fill();
+
+ c.strokeStyle="#8d7cff";
+ c.lineWidth=3;
+
+ c.beginPath();
+
+ for(let i=0;i<data.length;i++){
+
+   let angle=
+   (i/data.length)*Math.PI*2;
+
+   let r=
+   radius+
+   data[i]*.7;
+
+   let x=Math.cos(angle)*r;
+   let y=Math.sin(angle)*r;
+
+   if(i===0)c.moveTo(x,y);
+   else c.lineTo(x,y);
+
+ }
+
+ c.closePath();
+ c.stroke();
+
+ c.restore();
+
+}
+
+$("record").onclick=async function(){
+
+ if(!audio){
+   alert("Pilih lagu terlebih dahulu.");
+   return;
+ }
+
+ if(!startAudio())return;
+
+ let stream=cv.captureStream(30);
+
+ let audioStream=ctx.createMediaStreamDestination();
+
+ source.connect(audioStream);
+
+ audioStream.stream.getAudioTracks()
+ .forEach(t=>stream.addTrack(t));
+
+ chunks=[];
+
+ recorder=new MediaRecorder(stream,{
+   mimeType:"video/webm"
+ });
+
+ recorder.ondataavailable=e=>{
+   if(e.data.size)chunks.push(e.data);
+ };
+
+ recorder.onstop=()=>{
+
+   let blob=new Blob(chunks,{
+     type:"video/webm"
+   });
+
+   let url=URL.createObjectURL(blob);
+
+   let a=document.createElement("a");
+
+   a.href=url;
+   a.download=
+   ($("title").value||"AI-Music-Video")+
+   ".webm";
+
+   a.click();
+
+   $("status").textContent=
+   "Video selesai direkam.";
+
+ };
+
+ recorder.start();
+
+ $("status").textContent=
+ "🎥 Rekaman berjalan...";
+
+ audio.onended=()=>{
+   if(recorder &&
+      recorder.state!=="inactive"){
+      recorder.stop();
+   }
+ };
 
 };
+
+resize();
 
 </script>
 

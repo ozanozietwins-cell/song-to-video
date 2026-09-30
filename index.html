@@ -1,18 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07070c">
-<title>Song → Video AI</title>
+<title>LET ME GO — LIORA | AI Music Video</title>
 
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:#07070c;
+  background:#070812;
   color:#fff;
-  font-family:system-ui,Arial,sans-serif
+  font-family:Arial,sans-serif
 }
 main{
   max-width:760px;
@@ -20,16 +19,16 @@ main{
   padding:18px 15px 50px
 }
 h1{
-  font-size:27px;
-  margin:4px 0
+  font-size:26px;
+  margin:5px 0
 }
 .muted{
   opacity:.65;
   margin:0 0 18px
 }
 .card{
-  background:#11121a;
-  border:1px solid #292a36;
+  background:#11121c;
+  border:1px solid #292b3a;
   border-radius:18px;
   padding:16px;
   margin:12px 0
@@ -37,84 +36,73 @@ h1{
 label{
   display:block;
   font-size:13px;
-  opacity:.75;
-  margin:11px 0 6px
+  opacity:.8;
+  margin:10px 0 6px
 }
-input,textarea,select{
+input,button,select{
   width:100%;
   border-radius:12px;
-  border:1px solid #303240;
-  background:#171821;
+  border:1px solid #303348;
+  background:#171927;
   color:#fff;
   padding:12px;
   font-size:15px
 }
-textarea{
-  min-height:130px;
-  resize:vertical
+button{
+  background:#fff;
+  color:#111;
+  border:0;
+  font-weight:800;
+  margin-top:12px
+}
+button.secondary{
+  background:#292b3a;
+  color:#fff
+}
+button:disabled{
+  opacity:.45
 }
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px
 }
-button{
-  width:100%;
-  border:0;
-  border-radius:13px;
-  padding:13px;
-  margin-top:12px;
-  font-size:15px;
-  font-weight:800;
-  background:#fff;
-  color:#111
+.scene{
+  background:#0d0e17;
+  border:1px solid #292b3a;
+  border-radius:12px;
+  padding:10px
 }
-button.secondary{
-  background:#252632;
-  color:#fff
-}
-button:disabled{
-  opacity:.4
+.scene strong{
+  display:block;
+  margin-bottom:7px
 }
 canvas{
   width:100%;
   display:block;
-  background:#020205;
-  border-radius:15px
-}
-.scene{
-  padding:12px;
-  border:1px solid #292a36;
-  border-radius:12px;
-  margin:7px 0;
-  background:#0d0e15
-}
-.badge{
-  font-size:11px;
-  opacity:.55;
-  display:inline-block;
-  margin-top:5px
+  background:#000;
+  border-radius:14px
 }
 .status{
-  min-height:22px;
-  margin-top:9px;
-  opacity:.8;
+  margin-top:10px;
+  padding:10px;
+  background:#0d0e17;
+  border-radius:10px;
   font-size:13px
 }
-.download{
+a.download{
   display:block;
   text-align:center;
-  background:#191b25;
-  color:#fff;
+  background:#fff;
+  color:#111;
   padding:13px;
   border-radius:12px;
   text-decoration:none;
-  margin-top:10px
+  font-weight:bold;
+  margin-top:12px
 }
-.small{
-  font-size:12px;
-  opacity:.55;
-  line-height:1.5
+@media(max-width:600px){
+  .grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -122,456 +110,568 @@ canvas{
 <body>
 <main>
 
-<h1>🎬 Song → Video AI</h1>
+<h1>🎬 LET ME GO — LIORA</h1>
 <p class="muted">
-Versi HP • Storyboard • Visual audio-reactive • Export WebM
+AI Music Video • Cinematic • 9:16
 </p>
 
 <div class="card">
 
 <label>🎵 Lagu</label>
-<input id="audio" type="file" accept="audio/*">
+<input id="audioFile" type="file" accept="audio/*">
 
 <div class="grid">
-<div>
-<label>Judul</label>
-<input id="title" value="LET ME GO">
+  <div>
+    <label>Judul</label>
+    <input id="title" value="LET ME GO">
+  </div>
+
+  <div>
+    <label>Artis</label>
+    <input id="artist" value="LIORA">
+  </div>
 </div>
 
-<div>
-<label>Artis</label>
-<input id="artist" value="Soundfusion Project">
-</div>
-</div>
-
-<label>📝 Lirik / cerita lagu</label>
-<textarea id="lyrics">A woman is deeply hurt by the man she loves. He becomes cold and distant without explaining why. She keeps trying to save the relationship, but eventually discovers his betrayal. After loneliness and disappointment, she realizes that she deserves better. With tears in her eyes, she finally chooses to let him go and begins a new life.</textarea>
-
-<div class="grid">
-
-<div>
-<label>🎨 Tema</label>
-<select id="theme">
-<option>Dark Cinematic</option>
-<option>Romantic</option>
-<option>Gothic Metal</option>
-<option>EDM / Bass</option>
-<option>Horeg / Festival</option>
-<option>Dreamy</option>
-<option>Sad Emotional</option>
+<label>⏱️ Durasi setiap scene</label>
+<select id="sceneDuration">
+  <option value="15">15 detik</option>
+  <option value="20" selected>20 detik</option>
+  <option value="25">25 detik</option>
+  <option value="30">30 detik</option>
 </select>
-</div>
-
-<div>
-<label>📐 Rasio</label>
-<select id="ratio">
-<option value="9:16">9:16</option>
-<option value="16:9">16:9</option>
-<option value="1:1">1:1</option>
-</select>
-</div>
-
-</div>
-
-<button id="story">✨ Buat Storyboard</button>
-
-<div id="scenes"></div>
-
-<button id="preview" class="secondary" disabled>▶ Preview Video</button>
-<button id="record" class="secondary" disabled>🔴 Rekam Video</button>
-
-<div id="status" class="status"></div>
 
 </div>
 
 <div class="card">
-<canvas id="cv" width="720" height="1280"></canvas>
+
+<h3>🖼️ Upload 10 Scene AI</h3>
+
+<div class="scene">
+<strong>Scene 1 — Intro</strong>
+<input type="file" class="sceneFile" accept="image/*">
 </div>
 
-<div class="card small">
-<b>Catatan:</b><br>
-Aplikasi ini membuat video visual langsung di browser menggunakan lirik/cerita dan audio. 
-Hasil rekaman dapat disimpan sebagai video WebM.
+<div class="scene">
+<strong>Scene 2 — Verse 1</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 3 — Love</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 4 — Betrayal</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 5 — Crying</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 6 — Walking Away</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 7 — Alone</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 8 — Leaving</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 9 — Sunrise</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<div class="scene">
+<strong>Scene 10 — New Beginning</strong>
+<input type="file" class="sceneFile" accept="image/*">
+</div>
+
+<button id="loadBtn">📷 Muat Semua Scene</button>
+
+</div>
+
+<div class="card">
+
+<h3>🎞️ Preview</h3>
+
+<canvas id="canvas" width="720" height="1280"></canvas>
+
+<button id="previewBtn" class="secondary" disabled>
+▶ Preview Video
+</button>
+
+<button id="recordBtn" disabled>
+🔴 Rekam Video
+</button>
+
+<div id="status" class="status">
+Silakan pilih lagu dan gambar scene.
+</div>
+
+<div id="download"></div>
+
 </div>
 
 </main>
 
 <script>
-const $=id=>document.getElementById(id);
 
-const audioInput=$("audio");
-const titleInput=$("title");
-const artistInput=$("artist");
-const lyricsInput=$("lyrics");
-const themeInput=$("theme");
-const ratioInput=$("ratio");
+const audioFile =
+document.getElementById("audioFile");
 
-const canvas=$("cv");
-const ctx=canvas.getContext("2d");
-const statusBox=$("status");
+const sceneFiles =
+document.querySelectorAll(".sceneFile");
 
-let audio=null;
-let audioCtx=null;
-let analyser=null;
-let source=null;
-let data=null;
-let animation=null;
-let recorder=null;
-let chunks=[];
-let scenes=[];
+const loadBtn =
+document.getElementById("loadBtn");
 
-const palettes={
-"Dark Cinematic":["#080612","#6c4cff"],
-"Romantic":["#210812","#ff5d91"],
-"Gothic Metal":["#08090e","#cf31ff"],
-"EDM / Bass":["#020812","#00d8ff"],
-"Horeg / Festival":["#120700","#ff8500"],
-"Dreamy":["#07152a","#55b7ff"],
-"Sad Emotional":["#07101c","#5d8dff"]
-};
+const previewBtn =
+document.getElementById("previewBtn");
 
-function resize(){
-  const r=ratioInput.value;
+const recordBtn =
+document.getElementById("recordBtn");
 
-  if(r==="16:9"){
-    canvas.width=1280;
-    canvas.height=720;
-  }else if(r==="1:1"){
-    canvas.width=1080;
-    canvas.height=1080;
-  }else{
-    canvas.width=720;
-    canvas.height=1280;
-  }
+const canvas =
+document.getElementById("canvas");
 
-  drawFrame(0);
+const ctx =
+canvas.getContext("2d");
+
+const statusBox =
+document.getElementById("status");
+
+const downloadBox =
+document.getElementById("download");
+
+let audio = new Audio();
+let audioURL = null;
+
+let images = [];
+let running = false;
+let recording = false;
+
+let audioCtx = null;
+let sourceNode = null;
+let analyser = null;
+let destination = null;
+
+function status(text){
+  statusBox.textContent = text;
 }
 
-ratioInput.onchange=resize;
+function loadImage(file){
 
-function splitStory(text){
-  let parts=text
-    .split(/\n+/)
-    .map(x=>x.trim())
-    .filter(Boolean);
+  return new Promise((resolve,reject)=>{
 
-  if(parts.length<4){
-    const sentences=text
-      .split(/[.!?]+/)
-      .map(x=>x.trim())
-      .filter(Boolean);
+    const img = new Image();
 
-    parts=sentences;
-  }
+    img.onload = ()=>resolve(img);
 
-  if(parts.length<4){
-    parts=[
-      "Intro — establish the atmosphere",
-      "Verse — introduce the story",
-      "Chorus — emotional peak",
-      "Verse 2 — conflict develops",
-      "Bridge — realization",
-      "Final Chorus — emotional release",
-      "Outro — new beginning"
-    ];
-  }
+    img.onerror = reject;
 
-  return parts.slice(0,8);
+    img.src = URL.createObjectURL(file);
+
+  });
+
 }
 
-function makeStoryboard(){
+loadBtn.onclick = async ()=>{
 
-  scenes=splitStory(lyricsInput.value);
+  if(!audioFile.files[0]){
+    alert("Pilih file lagu terlebih dahulu.");
+    return;
+  }
 
-  const names=[
-    "INTRO",
-    "VERSE",
-    "PRE-CHORUS",
-    "CHORUS",
-    "VERSE 2",
-    "BRIDGE",
-    "FINAL CHORUS",
-    "OUTRO"
-  ];
+  const selected =
+  [...sceneFiles].filter(x=>x.files[0]);
 
-  $("scenes").innerHTML=scenes.map((text,i)=>`
-    <div class="scene">
-      <b>${names[i]||"SCENE "+(i+1)}</b><br>
-      <span class="badge">${text}</span>
-    </div>
-  `).join("");
+  if(selected.length === 0){
+    alert("Masukkan minimal 1 gambar scene.");
+    return;
+  }
 
-  $("preview").disabled=false;
-  $("record").disabled=false;
+  status("Memuat gambar scene...");
 
-  statusBox.textContent=
-    "Storyboard dibuat. Tekan Preview untuk melihat animasi.";
+  images = [];
 
-  drawFrame(0);
-}
+  for(const input of sceneFiles){
 
-function drawFrame(t){
+    if(input.files[0]){
 
-  const [bg,accent]=palettes[themeInput.value]||palettes["Dark Cinematic"];
+      const img =
+      await loadImage(input.files[0]);
 
-  const w=canvas.width;
-  const h=canvas.height;
+      images.push(img);
 
-  const g=ctx.createRadialGradient(
-    w*.5,h*.4,20,
-    w*.5,h*.5,Math.max(w,h)*.75
-  );
-
-  g.addColorStop(0,accent);
-  g.addColorStop(.25,bg);
-  g.addColorStop(1,"#000");
-
-  ctx.fillStyle=g;
-  ctx.fillRect(0,0,w,h);
-
-  const level=analyser&&data
-    ? data.reduce((a,b)=>a+b,0)/data.length/255
-    : .15+Math.sin(t/500)*.05;
-
-  const pulse=1+level*.7;
-
-  ctx.save();
-  ctx.translate(w/2,h*.42);
-  ctx.beginPath();
-  ctx.arc(0,0,Math.min(w,h)*.12*pulse,0,Math.PI*2);
-  ctx.fillStyle=accent+"55";
-  ctx.fill();
-
-  ctx.beginPath();
-  ctx.arc(0,0,Math.min(w,h)*.075*pulse,0,Math.PI*2);
-  ctx.fillStyle=accent+"99";
-  ctx.fill();
-  ctx.restore();
-
-  ctx.strokeStyle=accent;
-  ctx.lineWidth=Math.max(2,w/360);
-
-  ctx.beginPath();
-
-  const base=h*.65;
-
-  for(let x=0;x<w;x+=5){
-
-    let amp=level*h*.15;
-    let y=base+
-      Math.sin(x*.025+t*.004)*amp+
-      Math.sin(x*.08+t*.007)*amp*.4;
-
-    if(analyser&&data){
-      const index=Math.floor(x/w*data.length);
-      y-=data[index]/255*amp;
     }
 
-    if(x===0)ctx.moveTo(x,y);
-    else ctx.lineTo(x,y);
   }
 
-  ctx.stroke();
+  audioURL =
+  URL.createObjectURL(audioFile.files[0]);
 
+  audio.src = audioURL;
+
+  audio.preload = "auto";
+
+  previewBtn.disabled = false;
+  recordBtn.disabled = false;
+
+  status(
+    images.length +
+    " scene berhasil dimuat. Siap preview."
+  );
+
+};
+
+function drawCover(img,zoom=1){
+
+  const cw = canvas.width;
+  const ch = canvas.height;
+
+  const iw = img.width;
+  const ih = img.height;
+
+  const scale =
+    Math.max(cw/iw,ch/ih)*zoom;
+
+  const w = iw*scale;
+  const h = ih*scale;
+
+  const x = (cw-w)/2;
+  const y = (ch-h)/2;
+
+  ctx.drawImage(img,x,y,w,h);
+
+}
+
+function drawFrame(img,progress){
+
+  ctx.fillStyle="#000";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  const zoom =
+    1.00 + progress*0.08;
+
+  drawCover(img,zoom);
+
+  // dark cinematic overlay
+  const gradient =
+  ctx.createLinearGradient(
+    0,0,0,canvas.height
+  );
+
+  gradient.addColorStop(0,
+    "rgba(0,0,0,.18)");
+
+  gradient.addColorStop(.55,
+    "rgba(0,0,0,.05)");
+
+  gradient.addColorStop(1,
+    "rgba(0,0,0,.65)");
+
+  ctx.fillStyle=gradient;
+  ctx.fillRect(
+    0,0,canvas.width,canvas.height
+  );
+
+  // title
   ctx.textAlign="center";
 
-  ctx.fillStyle="#fff";
-  ctx.font=`bold ${Math.max(20,w/22)}px system-ui`;
-  ctx.fillText(titleInput.value,w/2,h*.10);
+  ctx.fillStyle="white";
 
-  ctx.font=`${Math.max(13,w/42)}px system-ui`;
-  ctx.globalAlpha=.7;
-  ctx.fillText(artistInput.value,w/2,h*.14);
+  ctx.font="bold 42px Arial";
+
+  ctx.fillText(
+    document.getElementById("title").value,
+    canvas.width/2,
+    80
+  );
+
+  ctx.font="22px Arial";
+
+  ctx.globalAlpha=.8;
+
+  ctx.fillText(
+    document.getElementById("artist").value,
+    canvas.width/2,
+    115
+  );
+
   ctx.globalAlpha=1;
 
-  const sceneIndex=scenes.length
-    ? Math.min(
-        scenes.length-1,
-        Math.floor((t/1000)%Math.max(1,scenes.length))
-      )
-    : 0;
+  // audio-reactive line
+  if(analyser){
 
-  if(scenes[sceneIndex]){
-    ctx.font=`${Math.max(14,w/38)}px system-ui`;
-    ctx.globalAlpha=.75;
-    ctx.fillText(
-      scenes[sceneIndex],
-      w/2,
-      h*.82
+    const data =
+    new Uint8Array(
+      analyser.frequencyBinCount
     );
-    ctx.globalAlpha=1;
+
+    analyser.getByteFrequencyData(data);
+
+    ctx.beginPath();
+
+    const step =
+    canvas.width/data.length;
+
+    for(let i=0;i<data.length;i++){
+
+      const v =
+      data[i]/255;
+
+      const y =
+      canvas.height-170-v*120;
+
+      const x=i*step;
+
+      if(i===0)
+        ctx.moveTo(x,y);
+      else
+        ctx.lineTo(x,y);
+
+    }
+
+    ctx.strokeStyle =
+    "rgba(180,150,255,.75)";
+
+    ctx.lineWidth=3;
+
+    ctx.stroke();
+
   }
+
 }
 
 async function setupAudio(){
 
-  if(!audioInput.files[0]) return;
+  if(audioCtx)
+    return;
 
-  if(!audioCtx){
-    audioCtx=new AudioContext();
+  audioCtx =
+  new AudioContext();
 
-    analyser=audioCtx.createAnalyser();
-    analyser.fftSize=256;
+  sourceNode =
+  audioCtx.createMediaElementSource(audio);
 
-    source=audioCtx.createMediaElementSource(audio);
+  analyser =
+  audioCtx.createAnalyser();
 
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
+  analyser.fftSize=256;
 
-    data=new Uint8Array(analyser.frequencyBinCount);
-  }
+  destination =
+  audioCtx.createMediaStreamDestination();
 
-  if(audioCtx.state==="suspended"){
-    await audioCtx.resume();
-  }
+  sourceNode.connect(analyser);
+
+  analyser.connect(audioCtx.destination);
+
+  analyser.connect(destination);
+
 }
 
-function preview(){
+async function playVideo(record=false){
 
-  if(!audioInput.files[0]){
-    statusBox.textContent="Pilih file lagu terlebih dahulu.";
+  if(images.length===0)
     return;
-  }
-
-  if(!audio){
-    audio=new Audio();
-    audio.src=URL.createObjectURL(audioInput.files[0]);
-    audio.crossOrigin="anonymous";
-  }
-
-  setupAudio().then(()=>{
-    audio.currentTime=0;
-    audio.play();
-
-    const start=performance.now();
-
-    function loop(now){
-      const t=now-start;
-
-      if(analyser){
-        analyser.getByteFrequencyData(data);
-      }
-
-      drawFrame(t);
-
-      if(!audio.paused){
-        animation=requestAnimationFrame(loop);
-      }
-    }
-
-    animation=requestAnimationFrame(loop);
-
-    statusBox.textContent="Preview sedang berjalan...";
-  });
-}
-
-async function recordVideo(){
-
-  if(!audioInput.files[0]){
-    statusBox.textContent="Pilih lagu terlebih dahulu.";
-    return;
-  }
-
-  if(!audio){
-    audio=new Audio();
-    audio.src=URL.createObjectURL(audioInput.files[0]);
-    audio.crossOrigin="anonymous";
-  }
 
   await setupAudio();
 
-  const stream=canvas.captureStream(30);
+  if(audioCtx.state==="suspended")
+    await audioCtx.resume();
 
-  const audioDestination=
-    audioCtx.createMediaStreamDestination();
+  running=true;
 
-  analyser.connect(audioDestination);
+  recording=record;
 
-  const combined=new MediaStream([
-    ...stream.getVideoTracks(),
-    ...audioDestination.stream.getAudioTracks()
-  ]);
+  downloadBox.innerHTML="";
 
-  chunks=[];
+  audio.currentTime=0;
 
-  const mime=
-    MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus")
+  const duration =
+  parseInt(
+    document.getElementById(
+      "sceneDuration"
+    ).value
+  );
+
+  await audio.play();
+
+  let recorder=null;
+  let chunks=[];
+
+  if(record){
+
+    const canvasStream =
+    canvas.captureStream(30);
+
+    const combined =
+    new MediaStream();
+
+    canvasStream
+    .getVideoTracks()
+    .forEach(track=>{
+      combined.addTrack(track);
+    });
+
+    destination
+    .stream
+    .getAudioTracks()
+    .forEach(track=>{
+      combined.addTrack(track);
+    });
+
+    const mime =
+    MediaRecorder.isTypeSupported(
+      "video/webm;codecs=vp9,opus"
+    )
     ? "video/webm;codecs=vp9,opus"
     : "video/webm";
 
-  recorder=new MediaRecorder(combined,{mimeType:mime});
+    recorder =
+    new MediaRecorder(
+      combined,
+      {mimeType:mime}
+    );
 
-  recorder.ondataavailable=e=>{
-    if(e.data.size)chunks.push(e.data);
-  };
+    recorder.ondataavailable=e=>{
+      if(e.data.size>0)
+        chunks.push(e.data);
+    };
 
-  recorder.onstop=()=>{
+    recorder.onstop=()=>{
 
-    const blob=new Blob(chunks,{type:"video/webm"});
+      const blob =
+      new Blob(
+        chunks,
+        {type:"video/webm"}
+      );
 
-    const url=URL.createObjectURL(blob);
+      const url =
+      URL.createObjectURL(blob);
 
-    const old=$("download");
-    if(old)old.remove();
+      const a =
+      document.createElement("a");
 
-    const link=document.createElement("a");
+      a.href=url;
 
-    link.id="download";
-    link.className="download";
-    link.href=url;
-    link.download=
-      (titleInput.value||"song-video")
-      .replace(/[^\w\-]+/g,"_")+
-      ".webm";
+      a.download=
+      "LET_ME_GO_LIORA.webm";
 
-    link.textContent="⬇️ Simpan Video";
+      a.textContent=
+      "⬇️ Download Video LET ME GO";
 
-    $("status").after(link);
+      a.className="download";
 
-    statusBox.textContent=
-      "Video selesai dibuat. Tekan Simpan Video.";
-  };
+      downloadBox.appendChild(a);
 
-  recorder.start(1000);
+      status(
+        "Video selesai dibuat."
+      );
 
-  audio.currentTime=0;
-  audio.play();
+    };
 
-  const start=performance.now();
+    recorder.start();
 
-  function loop(now){
-
-    const t=now-start;
-
-    if(analyser){
-      analyser.getByteFrequencyData(data);
-    }
-
-    drawFrame(t);
-
-    if(!audio.paused && recorder.state==="recording"){
-      animation=requestAnimationFrame(loop);
-    }
   }
 
-  animation=requestAnimationFrame(loop);
+  function frame(){
 
-  statusBox.textContent=
-    "🔴 Sedang merekam video...";
+    if(!running)
+      return;
 
-  audio.onended=()=>{
-    if(recorder.state==="recording"){
-      recorder.stop();
+    const current =
+    audio.currentTime;
+
+    const index =
+    Math.min(
+      images.length-1,
+      Math.floor(current/duration)
+    );
+
+    const sceneStart =
+    index*duration;
+
+    const progress =
+    Math.min(
+      1,
+      Math.max(
+        0,
+        (current-sceneStart)/duration
+      )
+    );
+
+    drawFrame(
+      images[index],
+      progress
+    );
+
+    status(
+      "Scene "+
+      (index+1)+
+      " / "+
+      images.length+
+      " • "+
+      Math.floor(current)+
+      " detik"
+    );
+
+    if(!audio.ended){
+
+      requestAnimationFrame(frame);
+
+    }else{
+
+      running=false;
+
+      if(recorder &&
+         recorder.state!=="inactive"){
+        recorder.stop();
+      }
+
+      audio.pause();
+
     }
-  };
+
+  }
+
+  requestAnimationFrame(frame);
+
 }
 
-$("story").onclick=makeStoryboard;
-$("preview").onclick=preview;
-$("record").onclick=recordVideo;
+previewBtn.onclick=()=>{
 
-resize();
-makeStoryboard();
+  if(running)
+    return;
+
+  playVideo(false);
+
+};
+
+recordBtn.onclick=()=>{
+
+  if(running)
+    return;
+
+  if(!confirm(
+    "Rekam video LET ME GO sekarang?"
+  ))
+    return;
+
+  playVideo(true);
+
+};
+
 </script>
 
 </body>

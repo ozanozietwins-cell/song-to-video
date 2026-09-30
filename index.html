@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08080f">
+<link rel="manifest" href="manifest.json">
+<title>Song → Video AI</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#07070c;color:#fff;font-family:system-ui,Arial,sans-serif}
+main{max-width:760px;margin:auto;padding:18px 15px 40px}
+h1{font-size:27px;margin:4px 0}.muted{opacity:.6}.card{background:#11121a;border:1px solid #252735;border-radius:18px;padding:16px;margin:12px 0}
+label{display:block;font-size:13px;opacity:.7;margin:11px 0 6px}
+input,textarea,select,button{width:100%;border-radius:12px;border:1px solid #303240;background:#171821;color:#fff;padding:12px;font-size:15px}
+textarea{min-height:120px;resize:vertical}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{background:#fff;color:#111;font-weight:800;border:0;margin-top:12px}.secondary{background:#1b1c25;color:#fff}
+canvas{width:100%;display:block;border-radius:15px;background:#020205;margin-top:8px}
+#status{font-size:13px;opacity:.7;min-height:20px;margin-top:9px}.scene{padding:10px;border:1px solid #292a36;border-radius:12px;margin:7px 0;background:#0d0e15}
+.badge{font-size:11px;opacity:.55}.download{display:block;text-align:center;background:#1b1c25;color:#fff;padding:13px;border-radius:12px;text-decoration:none;margin-top:10px}
+</style>
+</head>
+<body><main>
+<h1>🎬 Song → Video AI</h1>
+<div class="muted">Versi HP • storyboard + visual audio-reactive • PWA</div>
+
+<div class="card">
+<label>🎵 Lagu</label><input id="audio" type="file" accept="audio/*">
+<div class="grid">
+<div><label>Judul</label><input id="title" value="My New Song"></div>
+<div><label>Artis</label><input id="artist" value="Soundfusion Project"></div>
+</div>
+<label>📝 Lirik / cerita lagu</label>
+<textarea id="lyrics" placeholder="Tempel lirik di sini. Contoh: seorang wanita ditinggalkan kekasihnya..."></textarea>
+<div class="grid">
+<div><label>Tema</label><select id="theme">
+<option>Dark Cinematic</option><option>Gothic Metal</option><option>EDM / Bass</option>
+<option>Horeg / Festival</option><option>Romantic</option>
+</select></div>
+<div><label>Rasio</label><select id="ratio"><option>9:16</option><option>16:9</option><option>1:1</option></select></div>
+</div>
+<button id="story">✨ Buat Storyboard</button>
+<div id="scenes"></div>
+<button id="preview" class="secondary" disabled>▶ Preview Video</button>
+<button id="record" disabled>⏺ Rekam Video</button>
+<div id="status"></div>
+</div>
+
+<div class="card"><canvas id="cv" width="720" height="1280"></canvas></div>
+<div id="out"></div>
+
+<div class="card muted" style="font-size:12px;line-height:1.5">
+Versi ini membuat storyboard berdasarkan lirik dan menghasilkan visual audio-reactive langsung di browser.
+Untuk benar-benar membuat <b>scene AI berupa gambar/video fotorealistik</b>, aplikasi berikutnya perlu dihubungkan ke layanan AI dengan API key.
+</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const cv=$('cv'),ctx=cv.getContext('2d');let audio,ac,an,buf,src,raf,rec,chunks=[];
+let scenes=[];
+const palettes={
+"Dark Cinematic":["#04050b","#7868ff"],"Gothic Metal":["#09030e","#cf31ff"],
+"EDM / Bass":["#020812","#00d8ff"],"Horeg / Festival":["#120700","#ff8500"],"Romantic":["#12050c","#ff5d91"]
+};
+function resize(){let r=$('ratio').value;if(r==="16:9"){cv.width=1280;cv.height=720}else if(r==="1:1"){cv.width=cv.height=1080}else{cv.width=720;cv.height=1280}}
+$('ratio').onchange=resize;resize();
+
+function makeScenes(){
+ let text=$('lyrics').value.trim();
+ let parts=text?text.split(/\n+/).filter(Boolean):["Intro — establish atmosphere","Verse — introduce the story","Chorus — emotional peak","Bridge — change of mood","Outro — closing scene"];
+ if(parts.length>8)parts=parts.slice(0,8);
+ const names=["INTRO","VERSE","PRE-CHORUS","CHORUS","VERSE 2","BRIDGE","FINAL CHORUS","OUTRO"];
+ scenes=parts.map((p,i)=>({name:names[i]||("SCENE "+(i+1)),text:p}));
+ $('scenes').innerHTML=scenes.map((s,i)=>`<div class="scene"><b>${s.name}</b><br><span class="badge">${s.text}</span></div>`).join("");
+ $('preview').disabled=false;$('record').disabled=false;
+ $('status').textContent="Storyboard dibuat. Sekarang Preview atau Rekam.";
+}
+$('story').onclick=makeScenes;
+
+function draw(t){
+ const [bg,acx]=palettes[$('theme').value];let avg=0;
+ if(an){an.getByteFrequencyData(buf);for(let v of buf)avg+=v;avg/=buf.length}
+ const g=ctx.createRadialGradient(cv.width/2,cv.height*.45,2,cv.width/2,cv.height*.45,cv.width*.75);
+ g.addColorStop(0,acx);g.addColorStop(1,bg);ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
+ const pulse=1+avg/800;
+ ctx.beginPath();ctx.arc(cv.width/2,cv.height*.44,Math.min(cv.width,cv.height)*.16*pulse,0,Math.PI*2);
+ ctx.fillStyle=acx+"55";ctx.fill();
+ for(let i=0;i<90;i++){let a=i/90*Math.PI*2+t*.0002,rad=Math.min(cv.width,cv.height)*(.18+(i%9)*.025)+avg*.8;
+ let x=cv.width/2+Math.cos(a)*rad,y=cv.height*.44+Math.sin(a)*rad;ctx.fillStyle=acx+"99";ctx.fillRect(x,y,3+avg/90,3+avg/90)}
+ if(an){ctx.beginPath();ctx.lineWidth=3;ctx.strokeStyle=acx;let n=Math.min(220,buf.length);
+ for(let i=0;i<n;i++){let x=i/(n-1)*cv.width,y=cv.height*.70-(buf[i]/255)*cv.height*.17;i?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke()}
+ ctx.textAlign="center";ctx.fillStyle="#fff";ctx.font=`800 ${Math.max(28,cv.width*.045)}px Arial`;
+ ctx.fillText($('title').value,cv.width/2,cv.height*.12);ctx.globalAlpha=.72;
+ ctx.font=`${Math.max(17,cv.width*.024)}px Arial`;ctx.fillText($('artist').value,cv.width/2,cv.height*.18);ctx.globalAlpha=1;
+}
+async function setup(){
+ if(!$('audio').files[0]){ $('status').textContent="Pilih lagu dulu.";return false}
+ audio=new Audio(URL.createObjectURL($('audio').files[0]));
+ ac=new (AudioContext||webkitAudioContext)();await ac.resume();an=ac.createAnalyser();an.fftSize=512;buf=new Uint8Array(an.frequencyBinCount);
+ src=ac.createMediaElementSource(audio);src.connect(an);an.connect(ac.destination);
+ audio.onended=()=>{$('status').textContent="Selesai.";};
+ return true;
+}
+$('preview').onclick=async()=>{if(!await setup())return;audio.currentTime=0;await audio.play();function loop(t){draw(t);raf=requestAnimationFrame(loop)}loop(0);$('status').textContent="Preview berjalan..."};
+$('record').onclick=async()=>{
+ if(!an){if(!await setup())return}
+ chunks=[];const v=cv.captureStream(30);let dest=ac.createMediaStreamDestination();src.connect(dest);
+ const ms=new MediaStream([...v.getVideoTracks(),...dest.stream.getAudioTracks()]);
+ let mime=MediaRecorder.isTypeSupported("video/webm;codecs=vp9,opus")?"video/webm;codecs=vp9,opus":"video/webm";
+ rec=new MediaRecorder(ms,{mimeType:mime});rec.ondataavailable=e=>e.data.size&&chunks.push(e.data);
+ rec.onstop=()=>{let b=new Blob(chunks,{type:mime}),u=URL.createObjectURL(b);$('out').innerHTML=`<a class="download" download="${$('title').value}.webm" href="${u}">⬇️ Simpan Video</a>`};
+ rec.start(1000);audio.currentTime=0;await audio.play();$('status').textContent="Merekam sampai lagu selesai...";$('record').disabled=true;
+ audio.onended=()=>{if(rec.state!=="inactive")rec.stop();$('record').disabled=false;$('status').textContent="Video selesai."}
+};
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script></body></html>
